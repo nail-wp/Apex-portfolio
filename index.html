@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>Apex – ዲጂታል ኤጀንሲ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js">
+    </script>
+    <style>
+        /* ═══════ RESET & VARIABLES ═══════ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-primary: #0A0A0A;
+            --bg-card: #141414;
+            --bg-header: rgba(10, 10, 10, 0.96);
+            --gold: #C8A45C;
+            --gold-light: #E8D5A3;
+            --gold-glow: rgba(200, 164, 92, 0.12);
+            --text-primary: #F5F0EB;
+            --text-muted: #8E8A86;
+            --border-gold: rgba(200, 164, 92, 0.25);
+            --shadow-gold: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--border-gold);
+            --font-heading: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --header-h: 68px;
+            --radius: 8px;
+            --section-gap: 60px;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ═══════ SCROLLBAR ═══════ */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 3px;
+        }
+
+        /* ═══════ HEADER ═══════ */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            height: var(--header-h);
+            background: var(--bg-header);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border-gold);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            transition: box-shadow 0.3s;
+        }
+        .header.scrolled {
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+        .header-brand h1 {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: var(--gold);
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .lang-toggle {
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid var(--border-gold);
+            background: transparent;
+            transition: all 0.25s;
+            color: var(--gold);
+        }
+        .lang-toggle:hover {
+            background: var(--gold);
+            color: #0A0A0A;
+            border-color: var(--gold);
+        }
+
+        /* ═══════ HERO ═══════ */
+        .hero {
+            margin-top: var(--header-h);
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            background: radial-gradient(circle at 70% 0%, var(--gold-glow) 0%, transparent 60%);
+            padding: 40px 20px;
+            border-bottom: 1px solid var(--border-gold);
+        }
+        .hero-content {
+            max-width: 700px;
+        }
+        .hero-content .badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid var(--border-gold);
+            padding: 4px 14px;
+            border-radius: 30px;
+            margin-bottom: 16px;
+        }
+        .hero-content h2 {
+            font-family: var(--font-heading);
+            font-size: clamp(32px, 6vw, 58px);
+            font-weight: 700;
+            line-height: 1.08;
+            margin-bottom: 16px;
+        }
+        .hero-content h2 .highlight {
+            color: var(--gold);
+            font-style: italic;
+        }
+        .hero-content p {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin-bottom: 28px;
+            font-weight: 300;
+            line-height: 1.7;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .btn-primary {
+            background: var(--gold);
+            color: #0A0A0A;
+            padding: 14px 34px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            border: 1px solid var(--gold);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s;
+        }
+        .btn-primary:hover {
+            background: var(--gold-light);
+            border-color: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(200, 164, 92, 0.25);
+        }
+        .btn-outline {
+            background: transparent;
+            color: #fff;
+            padding: 14px 34px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s;
+        }
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ═══════ SECTION TITLES ═══════ */
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .section-title .gold {
+            color: var(--gold);
+        }
+        .section-sub {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        /* ═══════ SERVICES ═══════ */
+        .services {
+            padding: var(--section-gap) 20px;
+            border-bottom: 1px solid var(--border-gold);
+        }
+        .services-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+        .service-card {
+            flex: 1 1 calc(50% - 20px);
+            min-width: 200px;
+            max-width: 460px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            padding: 28px 22px;
+            transition: transform 0.25s, box-shadow 0.25s;
+            text-align: center;
+        }
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-gold);
+        }
+        .service-card .icon {
+            font-size: 36px;
+            color: var(--gold);
+            margin-bottom: 12px;
+            display: block;
+        }
+        .service-card h3 {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .service-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ═══════ TEAM (moved right after Services) ═══════ */
+        .team {
+            padding: var(--section-gap) 20px;
+            border-bottom: 1px solid var(--border-gold);
+            background: radial-gradient(circle at 30% 100%, var(--gold-glow) 0%, transparent 50%);
+        }
+        .team-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+        .team-card {
+            flex: 1 1 calc(50% - 30px);
+            min-width: 240px;
+            max-width: 380px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            padding: 28px 20px 24px;
+            text-align: center;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .team-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-gold);
+        }
+        .team-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 12px;
+            border: 3px solid var(--gold);
+        }
+        .team-card .name {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+        .team-card .role {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .team-card .bio {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            padding: 0 6px;
+        }
+        .team-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .team-actions .btn-call {
+            background: var(--gold);
+            color: #0A0A0A;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid var(--gold);
+            transition: all 0.2s;
+        }
+        .team-actions .btn-call:hover {
+            background: var(--gold-light);
+            transform: scale(1.02);
+        }
+        .team-actions .btn-telegram {
+            background: transparent;
+            color: #25a9d3;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid #25a9d3;
+            transition: all 0.2s;
+        }
+        .team-actions .btn-telegram:hover {
+            background: #25a9d3;
+            color: #0A0A0A;
+        }
+        .team-note {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 24px;
+        }
+
+        /* ═══════ PORTFOLIO ═══════ */
+        .portfolio {
+            padding: var(--section-gap) 20px;
+            border-bottom: 1px solid var(--border-gold);
+        }
+        .portfolio-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            max-width: 900px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+        .portfolio-item {
+            flex: 1 1 180px;
+            max-width: 240px;
+            aspect-ratio: 1 / 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+        .portfolio-item a {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .portfolio-item:hover {
+            border-color: var(--gold);
+            box-shadow: var(--shadow-gold);
+        }
+        .portfolio-item .placeholder-text {
+            text-align: center;
+            padding: 10px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+        }
+        .portfolio-item .placeholder-text iconify-icon {
+            font-size: 32px;
+            color: var(--gold);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        /* ═══════ TESTIMONIALS ═══════ */
+        .testimonials {
+            padding: var(--section-gap) 20px;
+            border-bottom: 1px solid var(--border-gold);
+            background: radial-gradient(circle at 30% 100%, var(--gold-glow) 0%, transparent 50%);
+        }
+        .testimonial-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+        .testimonial-card {
+            flex: 1 1 calc(33.333% - 24px);
+            min-width: 220px;
+            max-width: 320px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            text-align: center;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-gold);
+        }
+        .testimonial-card .stars {
+            color: var(--gold);
+            font-size: 16px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .testimonial-card blockquote {
+            font-size: 14px;
+            font-style: italic;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .testimonial-card .client-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        .testimonial-card .client-title {
+            font-size: 12px;
+            color: var(--gold);
+        }
+
+        /* ═══════ FOOTER ═══════ */
+        .footer {
+            border-top: 1px solid var(--border-gold);
+            padding: 24px 20px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .footer .gold {
+            color: var(--gold);
+        }
+
+        /* ═══════ RESPONSIVE ═══════ */
+        @media (max-width: 768px) {
+            .service-card {
+                flex: 1 1 100%;
+                max-width: 400px;
+            }
+            .team-card {
+                flex: 1 1 100%;
+                max-width: 380px;
+            }
+            .testimonial-card {
+                flex: 1 1 100%;
+                max-width: 400px;
+            }
+            .portfolio-item {
+                flex: 1 1 calc(50% - 10px);
+                max-width: 180px;
+            }
+        }
+        @media (max-width: 480px) {
+            .header-brand h1 {
+                font-size: 16px;
+            }
+            .logo-img {
+                height: 28px;
+            }
+            .btn-group .btn-primary,
+            .btn-group .btn-outline {
+                width: 100%;
+                justify-content: center;
+            }
+            .portfolio-item {
+                flex: 1 1 calc(50% - 10px);
+                max-width: 160px;
+            }
+            .team-card img {
+                width: 80px;
+                height: 80px;
+            }
+            .team-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            .team-actions .btn-call,
+            .team-actions .btn-telegram {
+                width: 100%;
+                justify-content: center;
+            }
+            .testimonial-card {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════ HEADER ═══════ -->
+    <header class="header" id="mainHeader">
+        <div class="header-brand">
+            <img src="img/logo3.png" alt="Apex Logo" class="logo-img" id="logoImg" />
+            <h1 id="brandName" data-lang-am="ኤፔክስ" data-lang-en="Apex">ኤፔክስ</h1>
+        </div>
+        <div class="header-actions">
+            <button class="lang-toggle" id="langToggle">EN</button>
+        </div>
+    </header>
+
+    <!-- ═══════ HERO ═══════ -->
+    <section class="hero" id="heroSection">
+        <div class="container hero-content">
+            <span class="badge" id="heroBadge" data-lang-am="✦ ፕሪሚየም ዲጂታል ኤጀንሲ" data-lang-en="✦ Premium Digital Agency">✦ ፕሪሚየም ዲጂታል ኤጀንሲ</span>
+            <h2 id="heroTitle">
+                <span data-lang-am="ሳሎኖች እና የውበት ስቱዲዮዎች "></span><span class="highlight" data-lang-am="ተጨማሪ ደንበኞች" data-lang-en="more clients">ተጨማሪ ደንበኞች</span><span data-lang-am=" እንዲያገኙ እንረዳለን።" data-lang-en="We help salons & beauty studios get more clients."></span>
+                <span class="lang-en" style="display:none;">We help <span class="highlight">salons</span> &amp; beauty studios get <span class="highlight">more clients</span>.</span>
+            </h2>
+            <p id="heroDesc" data-lang-am="ዲጂታል ሎክቦክ፣ የQR ኮድ ጠረጴዛዎች፣ ፕሮፌሽናል ፎቶግራፍ እና የአስተያየት ስርዓት – ሁሉም ለአዲስ አበባ የውበት ኢንዱስትሪ ተብሎ የተሰራ።" data-lang-en="Digital lookbooks, QR code tables, professional photography, and feedback systems – all tailored for Addis Ababa's beauty industry.">ዲጂታል ሎክቦክ፣ የQR ኮድ ጠረጴዛዎች፣ ፕሮፌሽናል ፎቶግራፍ እና የአስተያየት ስርዓት – ሁሉም ለአዲስ አበባ የውበት ኢንዱስትሪ ተብሎ የተሰራ።</p>
+            <div class="btn-group">
+                <a href="#team" class="btn-primary" id="heroBtn1">
+                    <iconify-icon icon="lucide:phone"></iconify-icon>
+                    <span data-lang-am="አሁን ይደውሉ" data-lang-en="Call Now">አሁን ይደውሉ</span>
+                </a>
+                <a href="#portfolio" class="btn-outline" id="heroBtn2">
+                    <iconify-icon icon="lucide:grid"></iconify-icon>
+                    <span data-lang-am="ስራዎቻችን ይመልከቱ" data-lang-en="View Our Work">ስራዎቻችን ይመልከቱ</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ SERVICES ═══════ -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title" id="servicesTitle">
+                <span data-lang-am="የእኛ " data-lang-en="Our ">የእኛ </span>
+                <span class="gold" data-lang-am="አገልግሎቶች" data-lang-en="Services">አገልግሎቶች</span>
+            </h2>
+            <p class="section-sub" id="servicesSub" data-lang-am="የውበት ንግድዎ ዲጂታል እንዲሆን እና ተጨማሪ ደንበኞችን እንዲስብ ሁሉንም እንሰጣለን።" data-lang-en="We provide everything a beauty business needs to go digital and attract more clients.">የውበት ንግድዎ ዲጂታል እንዲሆን እና ተጨማሪ ደንበኞችን እንዲስብ ሁሉንም እንሰጣለን።</p>
+            <div class="services-grid">
+                <!-- Card 1 -->
+                <div class="service-card">
+                    <span class="icon">📱</span>
+                    <h3 data-lang-am="ዲጂታል ሎክቦክ" data-lang-en="Digital Lookbook">ዲጂታል ሎክቦክ</h3>
+                    <p data-lang-am="በጠረጴዛዎች ወይም መስታወቶች ላይ የQR ኮዶች። ደንበኞች ይሳሉ እና የእርስዎን ሙሉ የጥፍር/ላሽ ካታሎግ ወዲያው ይመለከታሉ።" data-lang-en="QR codes placed on tables or mirrors. Clients scan to view your full nail/lash catalog instantly.">በጠረጴዛዎች ወይም መስታወቶች ላይ የQR ኮዶች። ደንበኞች ይሳሉ እና የእርስዎን ሙሉ የጥፍር/ላሽ ካታሎግ ወዲያው ይመለከታሉ።</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="service-card">
+                    <span class="icon">📍</span>
+                    <h3 data-lang-am="ጎግል ማፕ + ቢዝነስ ካርዶች" data-lang-en="Google Maps + Business Cards">ጎግል ማፕ + ቢዝነስ ካርዶች</h3>
+                    <p data-lang-am="ድረ-ገጽዎን ከጎግል ማፕ ጋር እናያይዛለን እና 10 ፕሪሚየም ቢዝነስ ካርዶችን ከQR ኮዶች ጋር እናቀርባለን።" data-lang-en="We attach your site to Google Maps and provide 10 premium business cards with QR codes.">ድረ-ገጽዎን ከጎግል ማፕ ጋር እናያይዛለን እና 10 ፕሪሚየም ቢዝነስ ካርዶችን ከQR ኮዶች ጋር እናቀርባለን።</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="service-card">
+                    <span class="icon">📸</span>
+                    <h3 data-lang-am="ፕሮፌሽናል ፎቶግራፍ" data-lang-en="Professional Photography">ፕሮፌሽናል ፎቶግራፍ</h3>
+                    <p data-lang-am="የስራዎን (ጥፍር፣ ላሽ፣ ሜካፕ) ከፍተኛ ጥራት ያላቸውን ፎቶዎች በተስተካከለ ዋጋ እንቀረፃለን።" data-lang-en="We shoot high-quality photos of your work (nails, lashes, makeup) with a fixed, transparent price.">የስራዎን (ጥፍር፣ ላሽ፣ ሜካፕ) ከፍተኛ ጥራት ያላቸውን ፎቶዎች በተስተካከለ ዋጋ እንቀረፃለን።</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="service-card">
+                    <span class="icon">⭐</span>
+                    <h3 data-lang-am="የአስተያየት ስርዓት" data-lang-en="Feedback System">የአስተያየት ስርዓት</h3>
+                    <p data-lang-am="ለሳሎንዎ ፕሮፌሽናል የአስተያየት መድረክ እናዘጋጃለን። ደንበኞች አስተያየት መስጠት፣ ስራዎን መገምገም እና ልምዳቸውን ወዲያው ማጋራት ይችላሉ።" data-lang-en="We prepare a professional feedback platform for your salon. Clients leave reviews, rate your work, and share their experience instantly.">ለሳሎንዎ ፕሮፌሽናል የአስተያየት መድረክ እናዘጋጃለን። ደንበኞች አስተያየት መስጠት፣ ስራዎን መገምገም እና ልምዳቸውን ወዲያው ማጋራት ይችላሉ።</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ TEAM (moved right after Services) ═══════ -->
+    <section class="team" id="team">
+        <div class="container">
+            <h2 class="section-title" id="teamTitle">
+                <span data-lang-am="መስራቾችን " data-lang-en="Meet the ">መስራቾችን </span>
+                <span class="gold" data-lang-am="ይገናኙ" data-lang-en="Founders">ይገናኙ</span>
+            </h2>
+            <p class="section-sub" id="teamSub" data-lang-am="በቀጥታ ይደውሉልን ወይም የዋትስአፕ መልእክት ይላኩ። ንግድዎን ለመለወጥ ዝግጁ ነን።" data-lang-en="Call us directly or send a WhatsApp message. We are ready to transform your business.">በቀጥታ ይደውሉልን ወይም የዋትስአፕ መልእክት ይላኩ። ንግድዎን ለመለወጥ ዝግጁ ነን።</p>
+            <div class="team-grid">
+                <!-- Yeabsra -->
+                <div class="team-card">
+                    <img src="img/Y.jpg" alt="Yeabsra" id="imgYeabsra" />
+                    <div class="name" data-lang-am="የአብስራ ጌትዬ" data-lang-en="Yeabsra Getye">የአብስራ ጌትዬ</div>
+                    <div class="role" data-lang-am="ፍሮንት-ኤንድ ገንቢ እና ተባባሪ መስራች" data-lang-en="Front-end Dev &amp; Co-Founder">ፍሮንት-ኤንድ ገንቢ እና ተባባሪ መስራች</div>
+                    <div class="bio" data-lang-am="ንጹህ ኮድ፣ ውብ ዲዛይን እና ሳሎኖችን በመስመር ላይ ፕሪሚየም እንዲመስሉ ለማድረግ የተጓዘች ፈጣሪ።" data-lang-en="Passionate about clean code, beautiful design, and making salons look premium online.">ንጹህ ኮድ፣ ውብ ዲዛይን እና ሳሎኖችን በመስመር ላይ ፕሪሚየም እንዲመስሉ ለማድረግ የተጓዘች ፈጣሪ።</div>
+                    <div class="team-actions">
+                        <a href="tel:+251900478432" class="btn-call"><iconify-icon icon="lucide:phone"></iconify-icon> <span data-lang-am="ይደውሉ" data-lang-en="Call Now">ይደውሉ</span></a>
+                        <a href="https://t.me/Y_1_3_7" target="_blank" class="btn-telegram"><iconify-icon icon="simple-icons:telegram"></iconify-icon> <span data-lang-am="ቴሌግራም" data-lang-en="Telegram">ቴሌግራም</span></a>
+                    </div>
+                </div>
+                <!-- Bereket -->
+                <div class="team-card">
+                    <img src="img/B.jpg" alt="Bereket" id="imgBereket" />
+                    <div class="name" data-lang-am="በረከት ከበደ" data-lang-en="Bereket Kebede">በረከት ከበደ</div>
+                    <div class="role" data-lang-am="ቢዝነስ እና ማርኬቲንግ ተባባሪ መስራች" data-lang-en="Business &amp; Marketing Co-Founder">ቢዝነስ እና ማርኬቲንግ ተባባሪ መስራች</div>
+                    <div class="bio" data-lang-am="ስልታዊ አሳቢ፣ የእድገት ኤክስፐርት እና የደንበኞች ግንኙነት እና ማርኬቲንግ ፊት።" data-lang-en="Strategic thinker, growth hacker, and the face behind our client relationships and marketing.">ስልታዊ አሳቢ፣ የእድገት ኤክስፐርት እና የደንበኞች ግንኙነት እና ማርኬቲንግ ፊት።</div>
+                    <div class="team-actions">
+                        <a href="tel:+251972118584" class="btn-call"><iconify-icon icon="lucide:phone"></iconify-icon> <span data-lang-am="ይደውሉ" data-lang-en="Call Now">ይደውሉ</span></a>
+                        <a href="https://t.me/beki2577" target="_blank" class="btn-telegram"><iconify-icon icon="simple-icons:telegram"></iconify-icon> <span data-lang-am="ቴሌግራም" data-lang-en="Telegram">ቴሌግራም</span></a>
+                    </div>
+                </div>
+            </div>
+            <p class="team-note" id="contactNote" data-lang-am="💬 የአንድ ጊዜ የማዘጋጀት ክፍያ። ዝመናዎች በተናጥል ይከፈላሉ – ለግል ጥቅስ ይደውሉልን።" data-lang-en="💬 One-time setup fee. Updates are charged separately – call us for a custom quote.">💬 የአንድ ጊዜ የማዘጋጀት ክፍያ። ዝመናዎች በተናጥል ይከፈላሉ – ለግል ጥቅስ ይደውሉልን።</p>
+        </div>
+    </section>
+
+    <!-- ═══════ PORTFOLIO ═══════ -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <h2 class="section-title" id="portfolioTitle">
+                <span data-lang-am="የእኛ " data-lang-en="Our ">የእኛ </span>
+                <span class="gold" data-lang-am="ስራዎች" data-lang-en="Portfolio">ስራዎች</span>
+            </h2>
+            <p class="section-sub" id="portfolioSub" data-lang-am="ቀደም ብለን የረዳናቸው አንዳንድ ሳሎኖች እና ስቱዲዮዎች።" data-lang-en="Take a look at some of the salons and studios we have already helped.">ቀደም ብለን የረዳናቸው አንዳንድ ሳሎኖች እና ስቱዲዮዎች።</p>
+            <div class="portfolio-grid" id="portfolioGrid">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ TESTIMONIALS ═══════ -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title" id="testiTitle">
+                <span data-lang-am="ደንበኞቻችን " data-lang-en="What our ">ደንበኞቻችን </span>
+                <span class="gold" data-lang-am="ምን ይላሉ" data-lang-en="clients say">ምን ይላሉ</span>
+            </h2>
+            <p class="section-sub" id="testiSub" data-lang-am="በአዲስ አበባ ካሉ እውነተኛ የውበት ንግድ ባለቤቶች እውነተኛ አስተያየቶች።" data-lang-en="Real feedback from real beauty business owners in Addis.">በአዲስ አበባ ካሉ እውነተኛ የውበት ንግድ ባለቤቶች እውነተኛ አስተያየቶች።</p>
+            <div class="testimonial-grid" id="testimonialGrid">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ FOOTER ═══════ -->
+    <footer class="footer">
+        <div class="container">
+            <p>© <span id="footerYear">2026</span> <span class="gold" id="footerBrand" data-lang-am="ኤፔክስ" data-lang-en="Apex">ኤፔክስ</span> — <span id="footerText" data-lang-am="የኢትዮጵያ የውበት ቴክ አጋር" data-lang-en="Ethiopia's Beauty Tech Partner">የኢትዮጵያ የውበት ቴክ አጋር</span></p>
+        </div>
+    </footer>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!-- JAVASCRIPT (minimal – only for language & dynamic data) -->
+    <!-- ════════════════════════════════════════════════ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ─── 📞 PHONE NUMBERS (used for links) ───
+            // (already hardcoded in HTML)
+
+            // ─── 📁 PORTFOLIO ITEMS ───
+            const PORTFOLIO_ITEMS = [{
+                img: 'img/our work/glownail.png',
+                label: 'Glow Nails',
+                link: 'http://glow-nails.yeabsragetye1.workers.dev/'
+            }];
+
+            // ─── 💬 TESTIMONIALS ───
+            const TESTIMONIALS = {
+                am: [
+                    { name: 'Selam Tesfaye', title: 'Owner, Bella Nails',
+                    text: '"በረከት እና የአብስራ ስራ የኔን ሳሎን ደረጃ ከፍ አደረገው። ደንበኞቼ አሁን በቀላሉ ምርጫቸውን ያያሉ እና ያስቀምጣሉ።"' },
+                    { name: 'Meron Daniel', title: 'Manager, Luxe Lashes',
+                        text: '"ፎቶግራፍ እና ዲጂታል ሎክቦክ በጣም ፕሮፌሽናል ናቸው። በአንድ ሳምንት ውስጥ አዳዲስ ደንበኞችን አገኘሁ።"' },
+                    { name: 'Henok Abebe', title: 'Owner, Glam Studio',
+                        text: '"በጣም ምርጥ አገልግሎት! የQR ኮድ ጠረጴዛዎች ለደንበኞቼ በጣም ምቹ ናቸው። እኔ በግሌ እመክራለሁ።"' }
+                ],
+                en: [
+                    { name: 'Selam Tesfaye', title: 'Owner, Bella Nails',
+                        text: '"Bereket and Yeabsra took my salon to the next level. My clients now easily browse and save their favorite designs."' },
+                    { name: 'Meron Daniel', title: 'Manager, Luxe Lashes',
+                        text: '"The photography and digital lookbook are so professional. I gained new clients within one week."' },
+                    { name: 'Henok Abebe', title: 'Owner, Glam Studio',
+                        text: '"Best service ever! The QR code tables are so convenient for my clients. I highly recommend them."' }
+                ]
+            };
+
+            // ─── STATE ───
+            let currentLang = 'am';
+
+            // ─── LANGUAGE TOGGLE ───
+            function setLanguage(lang) {
+                currentLang = lang;
+                // Update all elements with data-lang-am / data-lang-en
+                document.querySelectorAll('[data-lang-am][data-lang-en]').forEach(function(el) {
+                    const val = el.getAttribute('data-lang-' + lang);
+                    if (val !== null) {
+                        // Preserve child nodes that are not text (like iconify-icon, span.highlight)
+                        // Only replace text content if there are no child elements with special classes
+                        const hasHighlight = el.querySelector('.highlight');
+                        if (hasHighlight) {
+                            // For elements with .highlight children, we need to be careful
+                            // We'll handle this by setting innerHTML but preserving the .highlight
+                            // Actually, for simplicity, we'll just set textContent for most elements
+                            // and handle special cases separately
+                            if (el.id === 'heroTitle') {
+                                // Special handling for hero title with highlight
+                                if (lang === 'am') {
+                                    el.innerHTML =
+                                        'ሳሎኖች እና የውበት ስቱዲዮዎች <span class="highlight">ተጨማሪ ደንበኞች</span> እንዲያገኙ እንረዳለን።';
+                                } else {
+                                    el.innerHTML =
+                                        'We help <span class="highlight">salons</span> &amp; beauty studios get <span class="highlight">more clients</span>.';
+                                }
+                                return;
+                            }
+                            if (el.id === 'servicesTitle' || el.id === 'portfolioTitle' || el.id === 'testiTitle' ||
+                                el.id === 'teamTitle') {
+                                // These have .gold spans, handled via separate spans
+                                return;
+                            }
+                        }
+                        // For elements with iconify-icon children, we need to be careful
+                        const hasIconify = el.querySelector('iconify-icon');
+                        if (hasIconify) {
+                            // Only update text nodes, not the icon
+                            const textNode = Array.from(el.childNodes).find(function(n) {
+                                return n.nodeType === 3 && n.textContent.trim().length > 0;
+                            });
+                            if (textNode) {
+                                textNode.textContent = val;
+                            }
+                            return;
+                        }
+                        // Default: set textContent
+                        el.textContent = val;
+                    }
+                });
+
+                // Update testimonials
+                renderTestimonials(lang);
+
+                // Update toggle button text
+                document.getElementById('langToggle').textContent = lang === 'am' ? 'EN' : 'አማ';
+
+                // Update HTML lang
+                document.documentElement.lang = lang;
+
+                // Update brand name separately (has iconify sibling)
+                const brandEl = document.getElementById('brandName');
+                if (brandEl) {
+                    const amVal = brandEl.getAttribute('data-lang-am');
+                    const enVal = brandEl.getAttribute('data-lang-en');
+                    brandEl.textContent = lang === 'am' ? amVal : enVal;
+                }
+                // Update footer brand
+                const footerBrand = document.getElementById('footerBrand');
+                if (footerBrand) {
+                    const amVal = footerBrand.getAttribute('data-lang-am');
+                    const enVal = footerBrand.getAttribute('data-lang-en');
+                    footerBrand.textContent = lang === 'am' ? amVal : enVal;
+                }
+            }
+
+            // ─── RENDER TESTIMONIALS ───
+            function renderTestimonials(lang) {
+                const grid = document.getElementById('testimonialGrid');
+                if (!grid) return;
+                grid.innerHTML = '';
+                const list = TESTIMONIALS[lang] || TESTIMONIALS.am;
+                list.forEach(function(tm) {
+                    const div = document.createElement('div');
+                    div.className = 'testimonial-card';
+                    div.innerHTML =
+                        '<div class="stars">★★★★★</div>' +
+                        '<blockquote>' + tm.text + '</blockquote>' +
+                        '<div class="client-name">' + tm.name + '</div>' +
+                        '<div class="client-title">' + tm.title + '</div>';
+                    grid.appendChild(div);
+                });
+            }
+
+            // ─── RENDER PORTFOLIO ───
+            function renderPortfolio() {
+                const grid = document.getElementById('portfolioGrid');
+                if (!grid) return;
+                grid.innerHTML = '';
+                PORTFOLIO_ITEMS.forEach(function(item) {
+                    const div = document.createElement('div');
+                    div.className = 'portfolio-item';
+                    if (item.link) {
+                        const a = document.createElement('a');
+                        a.href = item.link;
+                        a.target = '_blank';
+                        if (item.img) {
+                            const img = document.createElement('img');
+                            img.src = item.img;
+                            img.alt = item.label || 'Portfolio';
+                            img.onerror = function() {
+                                this.style.display = 'none';
+                                a.innerHTML = '<div class="placeholder-text"><iconify-icon icon="lucide:image"></iconify-icon>' +
+                                    (item.label || '') + '</div>';
+                            };
+                            a.appendChild(img);
+                        } else {
+                            a.innerHTML = '<div class="placeholder-text"><iconify-icon icon="lucide:image"></iconify-icon>' +
+                                (item.label || '') + '</div>';
+                        }
+                        div.appendChild(a);
+                    } else {
+                        if (item.img) {
+                            const img = document.createElement('img');
+                            img.src = item.img;
+                            img.alt = item.label || 'Portfolio';
+                            img.onerror = function() {
+                                this.style.display = 'none';
+                                div.innerHTML = '<div class="placeholder-text"><iconify-icon icon="lucide:image"></iconify-icon>' +
+                                    (item.label || '') + '</div>';
+                            };
+                            div.appendChild(img);
+                        } else {
+                            div.innerHTML = '<div class="placeholder-text"><iconify-icon icon="lucide:image"></iconify-icon>' +
+                                (item.label || '') + '</div>';
+                        }
+                    }
+                    grid.appendChild(div);
+                });
+            }
+
+            // ─── HEADER SCROLL SHADOW ───
+            window.addEventListener('scroll', function() {
+                const h = document.getElementById('mainHeader');
+                if (window.scrollY > 10) h.classList.add('scrolled');
+                else h.classList.remove('scrolled');
+            });
+
+            // ─── SMOOTH SCROLL for anchor links ───
+            document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && href !== '#') {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) {
+                            const headerOffset = 68;
+                            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset -
+                                headerOffset;
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // ─── LANGUAGE TOGGLE EVENT ───
+            document.getElementById('langToggle').addEventListener('click', function() {
+                const next = currentLang === 'am' ? 'en' : 'am';
+                setLanguage(next);
+            });
+
+            // ─── INIT ───
+            renderPortfolio();
+            // Set initial language (Amharic by default)
+            setLanguage('am');
+
+            // Footer year
+            document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+        })();
+    </script>
+
+</body>
+</html>
